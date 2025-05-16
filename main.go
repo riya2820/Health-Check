@@ -9,21 +9,40 @@ import (
 
 // service health status
 type HealthCheck struct {
-	Service string    `json:"service"`
-	Status  string    `json:"status"`
-	Time    time.Time `json:"time"`
+	Status string 'json:"status"'
+	LatestHeartbeat *time.Time `json:"latest heartbeat"`
+}
+	
+type HealthCheck struct {
+	DAGProcessor ComponentStatus `json:"dag_processor"`
+	Metadatabase ComponentStatus `json:"metadatabase"`
+	Scheduler ComponentStatus `json:"scheduler"`
+	Triggerer ComponentStatus `json:"triggered"`
 }
 
 func main() {
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		status := HealthCheck{
-			Service: "basic-service",
-			Status:  "OK",
-			Time:    time.Now(),
+		now := time.Now()
+		health := HealthResponse{
+			DAGProcessor: ComponentStatus{
+				LatestHeartbeat: nil,
+				Status: "unavailable",
+			},
+			Metadatabase: ComponentStatus{
+				Status: "healthy",
+			},
+			Scheduler: ComponentStatus{
+				LatestHeartbeat: &now,
+				Status:  "healthy",
+			},
+			Triggerer: ComponentStatus{
+				LatestHeartbeat: &now,
+				Status:  "healthy",
+			},
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(status)
+		json.NewEncoder(w).Encode(health)
 	})
 
 	log.Println("Server running at :8080")
