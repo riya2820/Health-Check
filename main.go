@@ -9,7 +9,7 @@ import (
 
 // service health status
 type HealthCheck struct {
-	Status string 'json:"status"'
+	Status string `json:"status"`
 	LatestHeartbeat *time.Time `json:"latest heartbeat"`
 }
 	
@@ -18,6 +18,7 @@ type HealthCheck struct {
 	Metadatabase ComponentStatus `json:"metadatabase"`
 	Scheduler ComponentStatus `json:"scheduler"`
 	Triggerer ComponentStatus `json:"triggered"`
+	StartTime ComponentStatus `json:"starttime"`
 }
 
 func main() {
@@ -43,6 +44,10 @@ func main() {
 			Triggerer: ComponentStatus{
 				LatestHeartbeat: &now,
 				Status:  "healthy",
+			},
+			StartTime: ComponentStatus{
+				LatestHeartbeat: &now,
+				Status: "started"
 			},
 		}
 
