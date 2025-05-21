@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// global variable, track duration 
 var startTime = time.now()
 
 type ComponentStatus struct {
