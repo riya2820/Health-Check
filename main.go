@@ -7,8 +7,9 @@ import (
 	"time"
 )
 
-// service health status
-type HealthCheck struct {
+var startTime = time.now()
+
+type ComponentStatus struct {
 	Status string `json:"status"`
 	LatestHeartbeat *time.Time `json:"latest heartbeat"`
 }
@@ -23,6 +24,10 @@ type HealthCheck struct {
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		time := time.Since(starttime).String()
+		respone := map[string]string{
+			"uptime":uptime
+		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Welcome to the service health check microservice!"))
 	})
