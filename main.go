@@ -11,49 +11,49 @@ import (
 var startTime = time.Now()
 
 type ComponentStatus struct {
-	Status          string     `json:"status"`
+	Status string `json:"status"`
 	LatestHeartbeat *time.Time `json:"latest heartbeat"`
 }
-
+	
 type HealthCheck struct {
 	DAGProcessor ComponentStatus `json:"dag_processor"`
 	Metadatabase ComponentStatus `json:"metadatabase"`
-	Scheduler    ComponentStatus `json:"scheduler"`
-	Triggerer    ComponentStatus `json:"triggered"`
-	StartTime    ComponentStatus `json:"starttime"`
+	Scheduler ComponentStatus `json:"scheduler"`
+	Triggerer ComponentStatus `json:"triggered"`
+	StartTime ComponentStatus `json:"starttime"`
 }
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		time := time.Since(starttime).String()
 		respone := map[string]string{
-			"uptime": uptime,
+			"uptime":uptime,
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Welcome to the service health check microservice!"))
 	})
-
+	
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		now := time.Now()
 		health := HealthResponse{
 			DAGProcessor: ComponentStatus{
 				LatestHeartbeat: nil,
-				Status:          "unavailable",
+				Status: "unavailable",
 			},
 			Metadatabase: ComponentStatus{
 				Status: "healthy",
 			},
 			Scheduler: ComponentStatus{
 				LatestHeartbeat: &now,
-				Status:          "healthy",
+				Status:  "healthy",
 			},
 			Triggerer: ComponentStatus{
 				LatestHeartbeat: &now,
-				Status:          "healthy",
+				Status:  "healthy",
 			},
 			StartTime: ComponentStatus{
 				LatestHeartbeat: &now,
-				Status:          "started",
+				Status: "started",
 			},
 		}
 
@@ -64,3 +64,4 @@ func main() {
 	log.Println("Server running at :8080")
 	http.ListenAndServe(":8080", nil)
 }
+
