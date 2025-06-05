@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"time"
 )
 
@@ -75,4 +77,21 @@ func main() {
 
 	log.Println("Server running at :8080")
 	http.ListenAndServe(":8080", nil)
+
+	server := &http.Server{Addr: ":8080"}
+
+	go func() {
+		log.Println("Server running on :8080")
+		if err := server.ListenAndServe(); err != nil {
+			log.Println("Server stopped:", err)
+		}
+	}()
+
+	// Wait for keyboard interrupt (Ctrl+C)
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+	<-stop
+
+	log.Println("Shutting down server...")
+	server.Close()
 }
