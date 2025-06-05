@@ -35,6 +35,7 @@ func main() {
 		json.NewEncoder(w).Encode(response)
 	})
 
+	// func handler
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		now := time.Now()
 		health := HealthCheck{
