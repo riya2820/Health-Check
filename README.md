@@ -1,4 +1,4 @@
-# Health Check API – Go
+# Health Check API – Go 
 
 This project provides a simple HTTP server written in Go that exposes a basic health check endpoint. It's designed to simulate component-level health status for systems such as DAG processors, metadata databases, and schedulers.
 
